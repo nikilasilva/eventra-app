@@ -32,6 +32,7 @@ const RootLayout = () => {
         // Set up your navigation stack
         <Stack>
             <Stack.Screen name="index" options={{headerShown: false}}/>
+            <Stack.Screen name="(auth)" options={{headerShown: false}}/>
             {/* Add other screens here */}
         </Stack>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, Text, ActivityIndicator, View} from 'react-native';
+import {TouchableOpacity, Text, ActivityIndicator} from 'react-native';
 
 // Define the props for the Button component
 interface ButtonProps {
@@ -31,7 +31,7 @@ const Button: React.FC<ButtonProps> = ({
                 items-center
                 justify-center
                 w-full
-                ${isLoading ? 'opacity-70' : ''}
+                ${isLoading ? 'opacity-80' : ''}
                 ${containerClassName}`
             }
             disabled={isLoading || disabled}

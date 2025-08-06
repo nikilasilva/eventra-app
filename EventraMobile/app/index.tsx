@@ -1,4 +1,5 @@
 import {Text, View} from "react-native";
+import {useRouter} from "expo-router";
 
 // Import our reusable components
 import Screen from "../components/common/Screen";
@@ -9,7 +10,9 @@ export default function GetStartedScreen() {
 
     // Function to handle button press
     const handleGetStarted = () => {
+        const router = useRouter();
         // Navigate to the next screen or perform any action
+        router.push('/sign-up');
         console.log("Get Started button pressed");
     };
 

@@ -15,6 +15,15 @@ module.exports = {
                 // Standard black and white
                 black: "#000000",
                 white: "#FFFFFF",
+                primaryText: "#F1F1F1",
+                secondaryText: "#B3B3B3",
+                text: {
+                    error: "#EF4444",
+                    success: "#22C55E",
+                    info: "#22D3EE",
+                },
+                darkGray: "#1A1A1A",
+
                 // You can also add grays for text, borders, etc.
                 gray: {
                     100: "#CDCDE0",
