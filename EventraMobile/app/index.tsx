@@ -19,7 +19,7 @@ export default function GetStartedScreen() {
     return (
         <Screen>
             {/* Main container for the whole screen */}
-            <View className="flex-1">
+            <View className="flex-1 p-4">
 
                 {/* Top Section: Logo */}
                 <View>

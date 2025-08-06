@@ -32,7 +32,7 @@ const SignUpScreen = () => {
 
     return (
         <Screen>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false} className="p-4">
                 <View className="items-center mb-2 mt-safe-offset-0.5">
                     <Text className="text-primary font-lalezarregular text-6xl">Eventra</Text>
                     <Text className="text-primaryText font-pjsbold text-4xl mt-0.5">Creat Account</Text>

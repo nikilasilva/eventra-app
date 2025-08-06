@@ -10,7 +10,7 @@ const Screen: React.FC<ScreenProps> = ({children}) => {
         // Use edgest to control safe area paddings
         <SafeAreaView style={{flex: 1, backgroundColor: '#000000'}}>
             <StatusBar barStyle="light-content"/>
-            <View className="flex-1 p-6">
+            <View className="flex-1">
                 {children}
             </View>
         </SafeAreaView>
