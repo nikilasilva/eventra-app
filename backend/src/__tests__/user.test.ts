@@ -32,7 +32,7 @@ describe("User Authentication API", () => {
       });
       expect(res.statusCode).toEqual(201);
       expect(res.body).toHaveProperty("_id");
-      expect(res.body).toHaveProperty("email", "nikilaamantha@gmail.com");
+      expect(res.body).toHaveProperty("email", "manasilva@gmail.com");
     });
 
     it("should fail to register with an existing email and return 400", async () => {

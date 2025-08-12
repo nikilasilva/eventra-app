@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { User } from "../models/userModel";
 
-export const protect = (req: Request, res: Response, next: NextFunction) => {
+export const protect = async (req: Request, res: Response, next: NextFunction) => {
   let token;
   if (
     req.headers.authorization &&
@@ -13,15 +14,14 @@ export const protect = (req: Request, res: Response, next: NextFunction) => {
 
       // Verify token
       const jwtSecret = process.env.JWT_SECRET;
-
       if (!jwtSecret) {
         throw new Error("JWT secret is not defined in the .env");
       }
-      
-    //   const decoded = jwt.verify(token, jwtSecret as string);
+
+      const decoded = jwt.verify(token!, jwtSecret);
 
       // Attach user to the request (you might need to extend the Request type)
-      // (req as any).user = await User.findById((decoded as any).id).select('-password');
+      (req as any).user = await User.findById((decoded as any).id).select('-password');
 
       next();
     } catch (error) {
