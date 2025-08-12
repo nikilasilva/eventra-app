@@ -47,4 +47,4 @@ jobs:
           context: .
           file: ./backend/Dockerfile
           push: true
-          tags: yourdockerhubusername/eventra-backend:latest
+          tags: nikilasilva/eventra-backend:latest
