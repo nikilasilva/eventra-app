@@ -37,7 +37,7 @@ describe("User Authentication API", () => {
 
     it("should fail to register with an existing email and return 400", async () => {
       // first, register a user
-      await request(app).post("api/users/register").send({
+      await request(app).post("/api/users/register").send({
         firstName: "Nikila",
         lastName: "Amantha",
         email: "nikilaamantha@gmail.com",
