@@ -23,9 +23,9 @@ describe("User Authentication API", () => {
   describe("POST /api/users/register", () => {
     it("should register a new user and return 201", async () => {
       const res = await request(app).post("/api/users/register").send({
-        firstName: "Nikila",
+        firstName: "Mana",
         lastName: "Silva",
-        email: "nikilasilva@gmail.com",
+        email: "manasilva@gmail.com",
         mobile: "+94783456700",
         password: "password123",
         userType: "attendee",
