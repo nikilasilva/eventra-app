@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*Set the default font family the entire app*/
+@layer base {
+    body {
+        @apply font-pjsregular;
+    }
+}
