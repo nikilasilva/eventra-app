@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       match: [
-        /^\+94\d{10}$/,
+        /^\+94\d{9}$/,
         "Please fill a valid number: (e.g.: +94773245500)",
       ],
     },

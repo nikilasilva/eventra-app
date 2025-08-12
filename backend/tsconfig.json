@@ -11,7 +11,7 @@
     "moduleResolution": "node",
 
     /* Enable node type declarations */
-    "types": ["node"],
+    "types": ["node", "jest"],
 
     /* Output files */
     "sourceMap": true,
