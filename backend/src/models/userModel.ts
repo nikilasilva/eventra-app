@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows multiple documents to have a null value for this field
+    },
     firstName: {
       type: String,
       required: [true, "First name is required"],
@@ -23,7 +28,6 @@ const userSchema = new mongoose.Schema(
     },
     mobile: {
       type: String,
-      required: [true, "Mobile number is required."],
       unique: true,
       trim: true,
       match: [
@@ -33,7 +37,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required."],
     },
     userType: {
       type: String,

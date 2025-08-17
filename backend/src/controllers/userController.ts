@@ -2,10 +2,22 @@ import { User } from "../models/userModel";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import passport from "passport";
 
+/**
+ * @route GET /api/users/register
+ */
 export const registerUser = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, mobile, password, userType } = req.body;
+    const { fullName, email, mobile, password, userType } = req.body;
+
+    if (!fullName || !email || !password || !userType) {
+      return res.status(400).json({ message: "Please fill all fields" });
+    }
+
+    const nameParts = fullName.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" ") || firstName;
 
     // Hash password before saving
     const salt = await bcrypt.genSalt(10);
@@ -35,7 +47,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await bcrypt.compare(password, user.password!))) {
       // generate jwt token
       const token = jwt.sign(
         { id: user._id },
@@ -62,4 +74,32 @@ export const getUserProfile = async (req: Request, res: Response) => {
   // This route will be protected, so we can assume we have the user
   // For a real app, you'd get the user from the token via the `protect` middleware
   res.json({ message: "This is a protected profile route." });
+};
+
+/**
+ * Google OAuth authentication
+ * @route GET /api/users/auth/google
+ *  */
+export const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+/**
+ * Handle Google OAuth callback
+ * @route GET /api/users/auth/google/callback
+ */
+export const googleAuthCallback = (req: Request, res: Response) => {
+  const token = jwt.sign(
+    { id: (req.user as any)._id },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: "7d",
+    }
+  );
+
+  res.status(200).json({
+    message: "Successfully logged in with Google",
+    token: token,
+    user: req.user,
+  });
 };
