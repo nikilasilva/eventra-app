@@ -1,31 +1,57 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import {useRouter} from 'expo-router';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from 'react-native-toast-message';
 
 import Screen from '@/components/common/Screen';
-import RoleSelector from "@/components/common/RoleSelector";
 import FormField from "@/components/common/FormField";
 import Button from "@/components/common/Button";
 import GoogleButton from "@/components/common/GoogleButton";
+import api from "@/lib/api";
 
 const SignInScreen = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState<'Attendee' | 'Organizer'>('Attendee');
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSignIn = () => {
-        console.log({email, password, role});
+    const handleSignIn = async () => {
 
         setIsLoading(true);
 
-        // Simulate an API call
-        setTimeout(() => {
-            setIsLoading(false);
+        try {
+            const response = await api.post('/login', {email, password});
+            const {token, user} = response.data;
 
-            router.push('/home');
-        }, 1000);
+            console.log("Logged in successs:", response.data);
+
+            // Store the token securely
+            await AsyncStorage.setItem('userToken', token);
+
+            Toast.show({
+                type: 'success',
+                text1: `Welcome back! ${user.firstName}`,
+            });
+
+            // Navigate based on user type
+            if (user.userType === 'organizer') {
+                router.replace('/(organizer)/dashboard');
+            } else {
+                router.replace('/(tabs)/home');
+            }
+        } catch (error: any) {
+            console.error(error.response?.data || error.message);
+
+            Toast.show({
+                type: 'error',
+                text1: 'Sign-In Failed',
+                text2: error.response?.data?.message || "Invalid credentials."
+            });
+
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleRedirectSignUp = () => {
@@ -65,12 +91,10 @@ const SignInScreen = () => {
                     secureTextEntry
                 />
 
-                {/*Role Selector*/}
-                <RoleSelector selectedRole={role} onSelectRole={setRole}/>
-
                 <Button
                     onPress={handleSignIn}
                     title="Sign In"
+                    isLoading={isLoading}
                 />
 
                 <View className="flex-row justify-center items-center mt-4">

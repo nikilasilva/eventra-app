@@ -1,6 +1,7 @@
-import { SplashScreen, Stack } from "expo-router";
-import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import {SplashScreen, Stack} from "expo-router";
+import {useFonts} from "expo-font";
+import {useEffect} from "react";
+import Toast from 'react-native-toast-message';
 import './global.css';
 
 SplashScreen.preventAutoHideAsync();
@@ -30,12 +31,15 @@ const RootLayout = () => {
 
     return (
         // Set up your navigation stack
-        <Stack>
-            <Stack.Screen name="index" options={{headerShown: false}}/>
-            <Stack.Screen name="(auth)" options={{headerShown: false}}/>
-            <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-            {/* Add other screens here */}
-        </Stack>
+        <>
+            <Stack>
+                <Stack.Screen name="index" options={{headerShown: false}}/>
+                <Stack.Screen name="(auth)" options={{headerShown: false}}/>
+                <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                {/* Add other screens here */}
+            </Stack>
+            <Toast topOffset={60}/>
+        </>
     );
 
 };

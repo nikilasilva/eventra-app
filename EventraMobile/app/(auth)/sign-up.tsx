@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import Toast from 'react-native-toast-message';
 import {useRouter} from 'expo-router';
 
 import Screen from '../../components/common/Screen';
@@ -7,21 +8,60 @@ import RoleSelector from '../../components/common/RoleSelector';
 import FormField from '../../components/common/FormField';
 import Button from "@/components/common/Button";
 import GoogleButton from "@/components/common/GoogleButton";
+import api from "@/lib/api";
 
 const SignUpScreen = () => {
+    const router = useRouter();
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
-    const [role, setRole] = useState<'Attendee' | 'Organizer'>('Attendee');
+    const [role, setRole] = useState<'attendee' | 'organizer'>('attendee');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSignUp = () => {
-        console.log({fullName, email, password, passwordConfirm, role});
+    const handleSignUp = async () => {
+        if (password !== passwordConfirm) {
+
+            Toast.show({
+                type: 'error',
+                text1: 'Passwords do not match',
+            });
+
+            return
+        }
+
+        setIsLoading(true);
+
+        try {
+            const response = await api.post('/register', {
+                fullName,
+                email,
+                password,
+                userType: role,
+            });
+
+            Toast.show({
+                type: 'success',
+                text1: 'Welcome!',
+                text2: 'You have successfully signed up.'
+            });
+
+            console.log(`Sign up success: ${response}`)
+            router.push('/home');
+        } catch (error: any) {
+            console.log(error.response?.data || error.message);
+            Toast.show({
+                type: 'error',
+                text1: 'Sign-Up Failed',
+                text2: error.response?.data?.message || "Invalid credentials."
+            });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleRedirectSignIn = () => {
         // Navigate to sign-in screen
-        const router = useRouter();
         router.push('/sign-in');
         console.log(`signin button pressed`);
     };
@@ -29,6 +69,10 @@ const SignUpScreen = () => {
     const handleGoogleSignUp = () => {
         console.log("Google sign up requested");
     };
+
+    const handleRoleSelect = (selectedRole: 'Attendee' | 'Organizer') => {
+        setRole(selectedRole.toLowerCase() as 'attendee' | 'organizer');
+    }
 
     return (
         <Screen>
@@ -76,11 +120,13 @@ const SignUpScreen = () => {
                 />
 
                 {/*Role Selector*/}
-                <RoleSelector selectedRole={role} onSelectRole={setRole}/>
+                <RoleSelector selectedRole={role.charAt(0).toUpperCase() + role.slice(1) as 'Attendee' | 'Organizer'}
+                              onSelectRole={handleRoleSelect}/>
 
                 <Button
                     onPress={handleSignUp}
                     title="Sign Up"
+                    isLoading={isLoading}
                 />
 
                 <View className="flex-row justify-center items-center mt-4">
@@ -96,7 +142,7 @@ const SignUpScreen = () => {
 
             </ScrollView>
         </Screen>
-);
+    );
 };
 
 export default SignUpScreen;

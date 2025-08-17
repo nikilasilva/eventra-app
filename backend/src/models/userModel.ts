@@ -1,4 +1,3 @@
-import { match } from "assert";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -28,7 +27,6 @@ const userSchema = new mongoose.Schema(
     },
     mobile: {
       type: String,
-      unique: true,
       trim: true,
       match: [
         /^\+94\d{9}$/,
@@ -48,6 +46,15 @@ const userSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
+);
+
+// Add a partial index for the mobile field
+userSchema.index(
+    { mobile: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { mobile: { $type: "string" } }
+    }
 );
 
 export const User = mongoose.model("User", userSchema);

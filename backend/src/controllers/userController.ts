@@ -57,10 +57,17 @@ export const loginUser = async (req: Request, res: Response) => {
         }
       );
 
-      res.json({
+      const userForResponse = {
         _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
+        userType: user.userType,
+      };
+
+      res.json({
         token: token,
+        user: userForResponse,
       });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
