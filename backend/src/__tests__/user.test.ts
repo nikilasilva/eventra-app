@@ -23,8 +23,7 @@ describe("User Authentication API", () => {
   describe("POST /api/users/register", () => {
     it("should register a new user and return 201", async () => {
       const res = await request(app).post("/api/users/register").send({
-        firstName: "Mana",
-        lastName: "Silva",
+        fullName: "Mana Silva",
         email: "manasilva@gmail.com",
         mobile: "+94783456700",
         password: "password123",
@@ -38,20 +37,20 @@ describe("User Authentication API", () => {
     it("should fail to register with an existing email and return 400", async () => {
       // first, register a user
       await request(app).post("/api/users/register").send({
-        firstName: "Nikila",
-        lastName: "Amantha",
+        fullName: "Nikila Amantha",
         email: "nikilaamantha@gmail.com",
         mobile: "+94711234567",
         password: "password456",
+        userType: "organizer",
       });
 
       // Then, try to register with the same email
       const res = await request(app).post("/api/users/register").send({
-        firstName: "Nikila",
-        lastName: "Amantha",
+        fullName: "Nikila Amantha",
         email: "nikilaamantha@gmail.com",
         mobile: "+94711234567",
         password: "password456",
+        userType: "organizer",
       });
 
       expect(res.statusCode).toEqual(400);
@@ -64,8 +63,7 @@ describe("User Authentication API", () => {
     beforeEach(async () => {
       // Register a new user before test
       await request(app).post("/api/users/register").send({
-        firstName: "Test",
-        lastName: "User",
+        fullName: "Test User",
         email: "testuser@gmail.com",
         mobile: "+94777002233",
         password: "test1234",
